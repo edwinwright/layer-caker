@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-	/* config options here */
 	reactCompiler: true,
 	images: {
 		remotePatterns: [
@@ -10,6 +9,11 @@ const nextConfig: NextConfig = {
 				hostname: "cdn.sanity.io",
 			},
 		],
+	},
+	logging: {
+		fetches: {
+			fullUrl: true,
+		},
 	},
 };
 
