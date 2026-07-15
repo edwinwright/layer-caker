@@ -1,14 +1,28 @@
 import { notFound } from "next/navigation";
 import { Post } from "@/components/post";
-import { sanityFetch } from "@/sanity/lib/live";
-import { POST_QUERY } from "@/sanity/lib/queries";
+// import { client } from "@/sanity/lib/client";
+// import { sanityFetch } from "@/sanity/lib/live";
+import { client, sanityFetch } from "@/sanity/lib/client";
+import { POST_QUERY, POSTS_SLUGS_QUERY } from "@/sanity/lib/queries";
+
+export async function generateStaticParams() {
+	const slugs = await client
+		.withConfig({ useCdn: false })
+		.fetch(POSTS_SLUGS_QUERY);
+	return slugs;
+}
 
 export default async function Page({
 	params,
 }: {
 	params: Promise<{ slug: string }>;
 }) {
-	const { data: post } = await sanityFetch({
+	// const { data: post } = await sanityFetch({
+	// 	query: POST_QUERY,
+	// 	params: await params,
+	// });
+
+	const post = await sanityFetch({
 		query: POST_QUERY,
 		params: await params,
 	});
