@@ -28,6 +28,7 @@ export function Post(props: NonNullable<POST_QUERY_RESULT>) {
 						width={400}
 						height={400}
 						alt=""
+						loading="eager"
 					/>
 				</figure>
 			) : null}
