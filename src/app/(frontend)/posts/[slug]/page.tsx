@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { Post } from "@/components/post";
-import { client, sanityFetch } from "@/sanity/lib/client";
+// import { client, sanityFetch } from "@/sanity/lib/client";
+import { client } from "@/sanity/lib/client";
+import { sanityFetch } from "@/sanity/lib/live";
 import { POST_QUERY, POSTS_SLUGS_QUERY } from "@/sanity/lib/queries";
 
 export async function generateStaticParams() {
@@ -28,7 +30,7 @@ export default async function Page({
 
 	return (
 		<main className="container mx-auto grid grid-cols-1 gap-6 p-12">
-			<Post {...post} />
+			<Post {...post.data} />
 		</main>
 	);
 }

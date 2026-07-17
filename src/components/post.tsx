@@ -3,13 +3,23 @@ import { PortableText } from "next-sanity";
 import { Author } from "@/components/author";
 import { Categories } from "@/components/categories";
 import { PublishedAt } from "@/components/published-at";
+import { RelatedPosts } from "@/components/related-posts";
 import { Title } from "@/components/title";
 import { urlFor } from "@/sanity/lib/image";
 import { components } from "@/sanity/portableTextComponents";
 import type { POST_QUERY_RESULT } from "@/sanity/types";
 
 export function Post(props: NonNullable<POST_QUERY_RESULT>) {
-	const { title, author, mainImage, body, publishedAt, categories } = props;
+	const {
+		_id,
+		title,
+		author,
+		mainImage,
+		body,
+		publishedAt,
+		categories,
+		relatedPosts,
+	} = props;
 
 	return (
 		<article className="grid lg:grid-cols-12 gap-y-12">
@@ -35,6 +45,11 @@ export function Post(props: NonNullable<POST_QUERY_RESULT>) {
 			{body ? (
 				<div className="lg:col-span-7 lg:col-start-6 prose lg:prose-lg">
 					<PortableText value={body} components={components} />
+					<RelatedPosts
+						relatedPosts={relatedPosts}
+						documentId={_id}
+						documentType="post"
+					/>
 				</div>
 			) : null}
 		</article>

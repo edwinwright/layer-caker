@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 		}
 
 		body.tags.forEach((tag) => {
-			revalidateTag(tag, "max");
+			revalidateTag(tag, { expire: 0 });
 		});
 
 		return NextResponse.json({ body });
