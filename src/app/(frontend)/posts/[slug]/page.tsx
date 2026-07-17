@@ -1,7 +1,5 @@
 import { notFound } from "next/navigation";
 import { Post } from "@/components/post";
-// import { client } from "@/sanity/lib/client";
-// import { sanityFetch } from "@/sanity/lib/live";
 import { client, sanityFetch } from "@/sanity/lib/client";
 import { POST_QUERY, POSTS_SLUGS_QUERY } from "@/sanity/lib/queries";
 
@@ -17,14 +15,11 @@ export default async function Page({
 }: {
 	params: Promise<{ slug: string }>;
 }) {
-	// const { data: post } = await sanityFetch({
-	// 	query: POST_QUERY,
-	// 	params: await params,
-	// });
-
+	const { slug } = await params;
 	const post = await sanityFetch({
 		query: POST_QUERY,
-		params: await params,
+		params: { slug },
+		tags: [`post:${slug}`, "author", "category"],
 	});
 
 	if (!post) {
