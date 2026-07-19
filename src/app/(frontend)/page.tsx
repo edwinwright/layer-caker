@@ -1,12 +1,29 @@
-import Link from "next/link";
-import { Title } from "@/components/title";
+// import type { Metadata } from "next";
+import { PageBuilder } from "@/components/page-builder";
+import { sanityFetch } from "@/sanity/lib/live";
+import { HOME_PAGE_QUERY } from "@/sanity/lib/queries";
 
-export default function Home() {
-	return (
-		<section className="container mx-auto grid grid-cols-1 gap-6 p-12">
-			<Title>Layer Caker Home Page</Title>
-			<hr />
-			<Link href="/posts">Posts index &rarr;</Link>
-		</section>
-	);
+const getPage = async () =>
+	sanityFetch({
+		query: HOME_PAGE_QUERY,
+	});
+
+// export async function generateMetadata(): Promise<Metadata> {
+// 	const { data: page } = await getPage();
+
+// 	return {
+// 		title: page?.homePage?.seo.title,
+// 	};
+// }
+
+export default async function Page() {
+	const { data: page } = await getPage();
+
+	return page?.homePage?.content ? (
+		<PageBuilder
+			documentId={page.homePage._id}
+			documentType={page.homePage._type}
+			content={page.homePage.content}
+		/>
+	) : null;
 }
