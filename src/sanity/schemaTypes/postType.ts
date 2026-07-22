@@ -67,6 +67,10 @@ export const postType = defineType({
 			name: "seo",
 			type: "seo",
 		}),
+		defineField({
+			name: "social",
+			type: "social",
+		}),
 	],
 	preview: {
 		select: {
