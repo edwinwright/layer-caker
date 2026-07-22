@@ -49,5 +49,69 @@ export const POST_QUERY =
   relatedPosts[]{
     _key, // required for drag and drop
     ...@->{_id, title, slug} // get fields from the referenced post
+  },
+  "seo": {
+    "title": coalesce(seo.title, title, ""),
+    "description": coalesce(seo.description, ""),
+    "image": seo.image,
+    "noIndex": seo.noIndex == true,
+  },
+}`);
+
+export const PAGE_QUERY =
+	defineQuery(`*[_type == "page" && slug.current == $slug][0]{
+  ...,
+  "seo": {
+    "title": coalesce(seo.title, title, ""),
+    "description": coalesce(seo.description, ""),
+    "image": seo.image,
+    "noIndex": seo.noIndex == true,
+  },
+  content[]{
+    ...,
+    _type == "faqs" => {
+      ...,
+      faqs[]->
+    }
   }
 }`);
+
+export const HOME_PAGE_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
+  homePage->{
+    ...,
+    "seo": {
+      "title": coalesce(seo.title, title, ""),
+      "description": coalesce(seo.description, ""),
+      "image": seo.image,
+      "noIndex": seo.noIndex == true,
+    },
+    content[]{
+      ...,
+      _type == "faqs" => {
+        ...,
+        faqs[]->
+      }
+    }      
+  }
+}`);
+
+export const REDIRECTS_QUERY = defineQuery(`
+  *[_type == "redirect" && isEnabled == true] {
+      source,
+      destination,
+      permanent
+  }
+`);
+
+export const OG_IMAGE_QUERY = defineQuery(`
+  *[_id == $id][0]{
+    title,
+    "image": mainImage.asset->{
+      _id,
+      url,
+      metadata {
+        palette
+      }
+    }
+  }    
+`);
