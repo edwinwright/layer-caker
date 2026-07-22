@@ -19,18 +19,18 @@ type RouteProps = {
 
 const getPost = async (params: RouteProps["params"]) => {
 	const { slug } = await params;
-	const post = await sanityFetch({
+	const { data } = await sanityFetch({
 		query: POST_QUERY,
 		params: { slug },
 		tags: [`post:${slug}`, "author", "category"],
 	});
-	return post;
+	return data;
 };
 
 export async function generateMetadata({
 	params,
 }: RouteProps): Promise<Metadata> {
-	const { data: post } = await getPost(params);
+	const post = await getPost(params);
 
 	if (!post) return {};
 
@@ -59,13 +59,11 @@ export async function generateMetadata({
 export default async function Page({ params }: RouteProps) {
 	const post = await getPost(params);
 
-	if (!post) {
-		notFound();
-	}
+	if (!post) notFound();
 
 	return (
 		<main className="container mx-auto grid grid-cols-1 gap-6 p-12">
-			<Post {...post.data} />
+			<Post {...post} />
 		</main>
 	);
 }

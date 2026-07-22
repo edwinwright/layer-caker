@@ -9,7 +9,9 @@ import { urlFor } from "@/sanity/lib/image";
 import { components } from "@/sanity/portableTextComponents";
 import type { POST_QUERY_RESULT } from "@/sanity/types";
 
-export function Post(props: NonNullable<POST_QUERY_RESULT>) {
+type PostProps = NonNullable<POST_QUERY_RESULT>;
+
+export function Post(props: PostProps) {
 	const {
 		_id,
 		title,
