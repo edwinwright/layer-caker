@@ -42,7 +42,7 @@ export function PageBuilder({
 		},
 	);
 
-	if (!Array.isArray(content)) {
+	if (!Array.isArray(blocks)) {
 		return null;
 	}
 
@@ -56,47 +56,48 @@ export function PageBuilder({
 			}).toString()}
 		>
 			{blocks.map((block) => {
+				const { _key, _type } = block;
 				const DragHandle = ({ children }: { children: React.ReactNode }) => (
 					<div
 						data-sanity={createDataAttribute({
 							...createDataAttributeConfig,
 							id: documentId,
 							type: documentType,
-							path: `content[_key=="${block._key}"]`,
+							path: `content[_key=="${_key}"]`,
 						}).toString()}
 					>
 						{children}
 					</div>
 				);
 
-				switch (block._type) {
+				switch (_type) {
 					case "hero":
 						return (
-							<DragHandle key={block._key}>
+							<DragHandle key={_key}>
 								<Hero {...block} />
 							</DragHandle>
 						);
 					case "features":
 						return (
-							<DragHandle key={block._key}>
+							<DragHandle key={_key}>
 								<Features {...block} />
 							</DragHandle>
 						);
 					case "splitImage":
 						return (
-							<DragHandle key={block._key}>
+							<DragHandle key={_key}>
 								<SplitImage {...block} />
 							</DragHandle>
 						);
 					case "faqs":
 						return (
-							<DragHandle key={block._key}>
+							<DragHandle key={_key}>
 								<FAQs {...block} />
 							</DragHandle>
 						);
 					default:
 						// This is a fallback for when we don't have a block type
-						return <div key={block._key}>Block not found: {block._type}</div>;
+						return <div key={_key}>Block not found: {_type}</div>;
 				}
 			})}
 		</main>
